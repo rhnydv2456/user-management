@@ -64,7 +64,7 @@ router.post('/', auth, [
 
         await user.save();
 
-        res.send('Data saved successfully!');
+        res.json({ success: 'Data saved successfully!' });
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server error');
