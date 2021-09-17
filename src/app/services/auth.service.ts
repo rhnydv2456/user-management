@@ -33,6 +33,9 @@ export class AuthService {
         this.router.navigate(['/user-table']);
       });
   }
+  getUsers() {
+    return this.httpClient.get('http://localhost:5000/api/users');
+  }
   autoAuthUser() {
     const authInformation = this.getAuthData();
     if (authInformation) {

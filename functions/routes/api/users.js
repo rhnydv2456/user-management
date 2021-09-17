@@ -9,8 +9,8 @@ const { check, validationResult } = require('express-validator');
 const User = require('../../models/User');
 
 // @route POST api/users
-// @describe Register users
-// @access public
+// @describe save users
+// @access private
 
 router.post('/', auth, [
     check('firstName', 'firstName is required.').not().isEmpty(),
@@ -71,4 +71,17 @@ router.post('/', auth, [
     }
 });
 
+// @route GET api/users
+// @describe return all users
+// @access private
+
+router.get('/', auth, async (req, res) => {
+    User.find()
+        .then((documents) => {
+            return res.status(200).json({
+                message: "users fetched successsfully!",
+                users: documents,
+            });
+        });
+});
 module.exports = router;

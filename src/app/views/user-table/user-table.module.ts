@@ -5,6 +5,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { UserTableRoutingModule } from './user-table-routing.module';
 import { UserTableComponent } from './user-table.component';
+import { CommonModule } from '@angular/common';
 
 
 @NgModule({
@@ -13,7 +14,8 @@ import { UserTableComponent } from './user-table.component';
     UserTableRoutingModule,
     ChartsModule,
     BsDropdownModule,
-    ButtonsModule.forRoot()
+    ButtonsModule.forRoot(),
+    CommonModule
   ],
   declarations: [UserTableComponent]
 })
