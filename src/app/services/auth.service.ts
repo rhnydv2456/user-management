@@ -26,16 +26,13 @@ export class AuthService {
   getAuthStateListener() {
     return this.authStatusListener.asObservable();
   }
-  // createUser(email: string, password: string) {
-  //   const authData: AuthData = {
-  //     email: email,
-  //     password: password
-  //   };
-  //   this.httpClient.post('http://localhost:3000/api/auth/signup', authData)
-  //     .subscribe(result => {
-  //       console.log(result);
-  //     });
-  // }
+  createUser(data: any) {
+    this.httpClient.post('http://localhost:5000/api/users', data)
+      .subscribe(result => {
+        console.log(result);
+        this.router.navigate(['/user-table']);
+      });
+  }
   autoAuthUser() {
     const authInformation = this.getAuthData();
     if (authInformation) {

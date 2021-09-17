@@ -7,11 +7,11 @@ const UserSchema = new mongoose.Schema({
     // - password
     // - date of birth
     // - Hobbies(Multiple)
-    firstname: {
+    firstName: {
         type: String,
         required: true
     },
-    lastname: {
+    lastName: {
         type: String,
         required: true
     },

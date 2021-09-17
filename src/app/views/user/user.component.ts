@@ -24,5 +24,9 @@ export class UserComponent implements OnInit {
   ngOnInit(): void {
 
   }
-  onSubmit() { }
+  onSubmit() {
+    if (this.userForm.valid) {
+      this.authService.createUser(this.userForm.value);
+    }
+  }
 }

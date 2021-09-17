@@ -4,6 +4,7 @@ const gravatar = require('gravatar');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('config');
+const auth = require('../../middleware/auth');
 const { check, validationResult } = require('express-validator');
 const User = require('../../models/User');
 
@@ -11,9 +12,11 @@ const User = require('../../models/User');
 // @describe Register users
 // @access public
 
-router.post('/', [
-    check('firstname', 'firstName is required.').not().isEmpty(),
-    check('lastname', 'lastname is required.').not().isEmpty(),
+router.post('/', auth, [
+    check('firstName', 'firstName is required.').not().isEmpty(),
+    check('lastName', 'lastName is required.').not().isEmpty(),
+    check('hobbies', 'hobbies is required.').not().isEmpty(),
+    check('dateOfBirth', 'dateOfBirth is required.').not().isEmpty(),
     check('email', 'Please enter valid email address.').isEmail(),
     check('password', 'Password must be minimum 6 digit.').isLength({ min: 6 })
 ], async (req, res) => {
@@ -23,8 +26,7 @@ router.post('/', [
         return res.status(400).json({ error: error.array() });
     }
 
-    const { firstname, lastname, email, dateOfBirth, hobbies, password } = req.body;
-    console.log(req.body)
+    const { firstName, lastName, email, dateOfBirth, hobbies, password } = req.body;
     try {
         let user = await User.findOne({ email });
         // user exist
@@ -32,8 +34,8 @@ router.post('/', [
             return res.status(400).json({ error: [{ msg: 'Email already exist!' }] });
         }
         const profileFields = {};
-        if (firstname) profileFields.firstname = firstname;
-        if (lastname) profileFields.lastname = lastname;
+        if (firstName) profileFields.firstName = firstName;
+        if (lastName) profileFields.lastName = lastName;
         if (email) profileFields.email = email;
         if (dateOfBirth) profileFields.dateOfBirth = dateOfBirth;
         if (hobbies) profileFields.hobbies = hobbies.split(',').map(hobby => hobby.trim());
@@ -62,24 +64,7 @@ router.post('/', [
 
         await user.save();
 
-        // return jsonwebtoken
-
-        const payload = {
-            user: {
-                id: user.id
-            }
-        };
-
-        jwt.sign(
-            payload,
-            config.get('jwtSecret'),
-            {
-                expiresIn: 360000
-            },
-            (err, token) => {
-                if (err) throw err;
-                res.json({ token });
-            });
+        res.send('Data saved successfully!');
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server error');
